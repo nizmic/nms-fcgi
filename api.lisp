@@ -180,3 +180,29 @@
 
 (define-alien-routine ("FCGX_ShutdownPending" fcgx-shutdownpending)
     void)
+
+(defclass fcgi-stream (stream)
+  ((fcgx-stream
+    :initarg :fcgx-stream
+    :reader fcgx-stream)))
+
+(defmethod stream-write-string ((stream fcgi-stream) string &optional start end)
+  (fcgx-puts (subseq string start end)
+	     (fcgx-stream stream)))
+
+(defmethod stream-write-char ((stream fcgi-stream) char)
+  (fcgx-putchar (char-int char) (fcgx-stream stream)))
+
+(defmethod stream-line-length ((stream fcgi-stream))
+  nil)
+
+(defmethod stream-line-column ((stream fcgi-stream))
+  nil)
+
+(defun make-stream-from-fcgx-request-out (fcgx-request-struct)
+  (make-instance 'fcgi-stream
+		 :fcgx-stream (slot fcgx-request-struct 'out)))
+
+(defun make-stream-from-fcgx-request-err (fcgx-request-struct)
+  (make-instance 'fcgi-stream
+		 :fcgx-stream (slot fcgx-request-struct 'err)))

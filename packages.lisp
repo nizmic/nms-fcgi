@@ -56,4 +56,7 @@
 	   :fcgx-clearerror
 	   :fcgx-createwriter
 	   :fcgx-freestream
-	   :fcgx-shutdownpending))
+	   :fcgx-shutdownpending
+	   :fcgi-stream
+	   :make-stream-from-fcgx-request-out
+	   :make-stream-from-fcgx-request-err))
