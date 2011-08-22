@@ -28,7 +28,8 @@
 
 (defpackage :nms-fcgi
   (:use :common-lisp
-	:sb-alien)
+	:sb-alien
+	:sb-gray)
   (:export :fcgx-request
 	   :fcgx-iscgi
 	   :fcgx-init
@@ -59,4 +60,8 @@
 	   :fcgx-shutdownpending
 	   :fcgi-stream
 	   :make-stream-from-fcgx-request-out
-	   :make-stream-from-fcgx-request-err))
+	   :make-stream-from-fcgx-request-err
+	   :stream-write-string
+	   :stream-write-char
+	   :stream-write-length
+	   :stream-write-column))

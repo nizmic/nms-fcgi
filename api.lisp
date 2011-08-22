@@ -181,7 +181,7 @@
 (define-alien-routine ("FCGX_ShutdownPending" fcgx-shutdownpending)
     void)
 
-(defclass fcgi-stream (stream)
+(defclass fcgi-stream (fundamental-binary-output-stream)
   ((fcgx-stream
     :initarg :fcgx-stream
     :reader fcgx-stream)))
