@@ -181,28 +181,30 @@
 (define-alien-routine ("FCGX_ShutdownPending" fcgx-shutdownpending)
     void)
 
-(defclass fcgi-stream (fundamental-binary-output-stream)
+;; Wrapper class for FCGI output streams
+
+(defclass fcgi-output-stream (fundamental-binary-output-stream)
   ((fcgx-stream
     :initarg :fcgx-stream
     :reader fcgx-stream)))
 
-(defmethod stream-write-string ((stream fcgi-stream) string &optional start end)
+(defmethod stream-write-string ((stream fcgi-output-stream) string &optional start end)
   (fcgx-puts (subseq string start end)
 	     (fcgx-stream stream)))
 
-(defmethod stream-write-char ((stream fcgi-stream) char)
+(defmethod stream-write-char ((stream fcgi-output-stream) char)
   (fcgx-putchar (char-int char) (fcgx-stream stream)))
 
-(defmethod stream-line-length ((stream fcgi-stream))
+(defmethod stream-line-length ((stream fcgi-output-stream))
   nil)
 
-(defmethod stream-line-column ((stream fcgi-stream))
+(defmethod stream-line-column ((stream fcgi-output-stream))
   nil)
 
 (defun make-stream-from-fcgx-request-out (fcgx-request-struct)
-  (make-instance 'fcgi-stream
+  (make-instance 'fcgi-output-stream
 		 :fcgx-stream (slot fcgx-request-struct 'out)))
 
 (defun make-stream-from-fcgx-request-err (fcgx-request-struct)
-  (make-instance 'fcgi-stream
+  (make-instance 'fcgi-output-stream
 		 :fcgx-stream (slot fcgx-request-struct 'err)))

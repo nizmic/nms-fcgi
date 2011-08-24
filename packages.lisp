@@ -58,10 +58,6 @@
 	   :fcgx-createwriter
 	   :fcgx-freestream
 	   :fcgx-shutdownpending
-	   :fcgi-stream
+	   :fcgi-output-stream
 	   :make-stream-from-fcgx-request-out
-	   :make-stream-from-fcgx-request-err
-	   :stream-write-string
-	   :stream-write-char
-	   :stream-write-length
-	   :stream-write-column))
+	   :make-stream-from-fcgx-request-err))
