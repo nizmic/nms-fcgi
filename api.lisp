@@ -208,3 +208,33 @@
 (defun make-stream-from-fcgx-request-err (fcgx-request-struct)
   (make-instance 'fcgi-output-stream
 		 :fcgx-stream (slot fcgx-request-struct 'err)))
+
+;; Wrapper class for FCGI input streams
+
+(defclass fcgi-input-stream (fundamental-binary-input-stream)
+  ((fcgx-stream
+    :initarg :fcgx-stream
+    :reader fcgx-stream)))
+
+(defmethod stream-read-sequence ((stream fcgi-input-stream) seq &optional start end)
+  (let ((read-len (if (and start end)
+		      (- end start)
+		      (length seq)))
+	alien-str)
+    ; allocate c string
+    (setf alien-str (make-alien char (1+ read-len)))
+    ; set null byte
+    (setf (deref alien-str read-len) 0)
+    ; read from FCGI stream
+    (fcgx-getstr alien-str read-len (slot-value stream 'fcgx-stream))
+    ; copy c string contents to seq
+    (replace seq (cast alien-str c-string)
+	     :start1 (if start start 0)
+	     :end1 (if end end (length seq)))
+    ; free the c string memory
+    (free-alien alien-str)
+    read-len))
+
+(defun make-stream-from-fcgx-request-in (fcgx-request-struct)
+  (make-instance 'fcgi-input-stream
+		 :fcgx-stream (slot fcgx-request-struct 'in)))

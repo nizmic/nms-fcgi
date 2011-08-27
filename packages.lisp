@@ -59,5 +59,7 @@
 	   :fcgx-freestream
 	   :fcgx-shutdownpending
 	   :fcgi-output-stream
+	   :fcgi-input-stream
 	   :make-stream-from-fcgx-request-out
-	   :make-stream-from-fcgx-request-err))
+	   :make-stream-from-fcgx-request-err
+	   :make-stream-from-fcgx-request-in))
