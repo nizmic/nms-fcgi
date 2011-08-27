@@ -27,7 +27,7 @@
 (in-package :cl-user)
 
 (asdf:defsystem :nms-fcgi
-    :version "1.1.0"
+    :version "1.2.0"
     :serial t
     :components ((:file "packages")
 		 (:file "api")))
